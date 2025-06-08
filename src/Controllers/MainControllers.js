@@ -9,7 +9,10 @@ const index = (req, res) => {
              Apellido: req.body.Apellido, 
              Cedula: req.body.Cedula, 
              Materias: req.body.Materias,};
-           res.send(MainFormulario)
+
+             const DateForm = [...Object.entries(MainFormulario)];
+
+           res.render("../view/Parcials/Ver.ejs", {DateForm})
        
     }
 
