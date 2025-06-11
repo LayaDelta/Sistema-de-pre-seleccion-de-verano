@@ -21,8 +21,8 @@ const mainRouter = require("./src/Routes/mainRouter")
 //Usa la constante para llamar a la ruta
 app.use(mainRouter);
 
-const PreSeleccion = require("./src/Routes/PreSeleccion.router")
-app.use(PreSeleccion);
+const AdminView = require("./src/Routes/PreSeleccion.router")
+app.use(AdminView);
 
 
 app.use((req, res, next) => {
@@ -36,6 +36,28 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('err', { error: err.message || 'Error interno del servidor' });
 });
+app.locals.materias = [
+  "Matemática I",
+  "Fundamentos de la Informática",
+  "Lógica Matemática",
+  "Lenguaje y Comunicación",
+  "Inglés I",
+  "Formación Constitucional",
+  "Economía Digital en Venezuela",
+  "Matemática II",
+  "Física I",
+  "Algoritmos I",
+  "Problemática Científica Tecnológica",
+  "Inglés II",
+  "Electiva I",
+  "Arte y Cultura",
+  "Matemática III",
+  "Física II",
+  "Algoritmos II",
+  "Programación I",
+  "Metodología y Técnicas de Investigación",
+  "Electiva II"
+];
 
 //Servidor:
 

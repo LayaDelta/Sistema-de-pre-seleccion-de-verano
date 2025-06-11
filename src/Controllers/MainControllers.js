@@ -11,21 +11,37 @@ const index = (req, res) => {
     Apellido: req.body.Apellido,
     Cedula: req.body.Cedula,
     Correo: req.body.Correo,
-    Materias: req.body.Materias,
+    Materias: req.body.Materias1,
+    Materias2: req.body.Materias2,
     
   };
 
-  const sql = "INSERT INTO estudiantes (nombre, apellido, cedula, correo, materia) VALUES (?, ?, ?, ?, ?)";
+  const sql = `INSERT INTO estudiantes (nombre, apellido, cedula, correo, materia, materia2) VALUES (?, ?, ?, ?, ?, ?);
+      SET @count = 0;
+      UPDATE estudiantes SET id = (@count := @count + 1);
+      ALTER TABLE estudiantes AUTO_INCREMENT = 1;
+    `;
 
+
+
+
+  const Admin = false;
   const Validacion = false;
   const Confirmacion = false;
   const ErrorDup = false
 
+  // Si el usuario no seleccionó nada válido
+
+
   const DateForm = [...Object.entries(MainFormulario)];
 
-  const camposVacios = Object.entries(MainFormulario).filter(
-    ([key, value]) => !value || value.trim() === "" || value === "Seleccionar"
-  );
+  const camposVacios = Object.entries(MainFormulario)
+  .filter(([key, value]) => key !== "Materias-2" && (!value || value === ""))
+  .map(([key]) => key);
+
+   if(req.body.Nombre && req.body.Apellido == "Admin"){
+        res.render("../view/MainView.ejs", {Admin: true});
+      }
 
   if (camposVacios.length > 0) {
     return res.render("../view/MainView.ejs", { Validacion: true, Mensaje: "Por favor, rellena todos los campos." }, console.log("error"));
@@ -57,9 +73,10 @@ const index = (req, res) => {
     return reject( Validacion = true ,new error("Correo no es válido."));
   }
 
-    if (req.body.Materias == "Seleccionar" ) {
+    if (req.body.Materias1 == "Seleccionar" ) {
       return reject( Validacion = true ,new error("seleccion no es válido."));
     }
+
 
     // Si todo está bien
     resolve();
@@ -68,6 +85,8 @@ const index = (req, res) => {
   
 
   SubmitPr.then(() => {
+
+
     // Si pasó las validaciones
     pool.query(
     sql,
@@ -76,7 +95,8 @@ const index = (req, res) => {
       MainFormulario.Apellido,
       MainFormulario.Cedula,
       MainFormulario.Correo,
-      MainFormulario.Materias
+      MainFormulario.Materias,
+      MainFormulario.Materias2
     ],
     (err, results) => {
        if (err) {

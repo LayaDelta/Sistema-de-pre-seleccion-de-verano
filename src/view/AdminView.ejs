@@ -1,0 +1,47 @@
+
+  <div class="container mt-5">
+    <h2 class="mb-4">Listado de Estudiantes</h2>
+ <a class="navbar-brand" href="/">Inicio</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <table class="table table-bordered table-striped">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Cédula</th>
+          <th>Correo</th>
+          <th>Materia</th>
+          <th>Materia 2</th>
+          <th>Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (estudiantes.length > 0) { %>
+          <% estudiantes.forEach(function(estudiante) { %>
+            <tr>
+              <td><%= estudiante.id %></td>
+              <td><%= estudiante.nombre %></td>
+              <td><%= estudiante.apellido %></td>
+              <td><%= estudiante.cedula %></td>
+              <td><%= estudiante.correo %></td>
+              <td><%= estudiante.materia %></td>
+              <td><%= estudiante.materia2 %></td>
+               <td>
+          <a href="/actualizar/<%= estudiante.id %>" class="btn btn-warning btn-sm">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+        </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="7" class="text-center">No hay registros en la base de datos.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>

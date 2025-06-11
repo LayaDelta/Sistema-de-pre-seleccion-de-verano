@@ -1,37 +1,64 @@
 <body>
 
-    <% if (typeof Validacion !== "undefined" && Validacion) { %>
-          <%- include("./Parcials/Validacion.ejs") %>
-        <% } %>
-        <%-include("./Parcials/ErrDup.ejs")%>
-        
-        <% if (typeof Confirmacion !== "undefined" && Confirmacion) { %>
-         <p> carga exitosa</p>
-        <% } %>
-    <form action="/" method="post">
-        <div>
-        <label for="Nombre">Nombre:</label>
-        <input  type="text" name="Nombre">
-        </div>
-        <div>
-        <label for="Apellido">Apellido:</label>
-        <input type="text" name="Apellido">
-        </div>
-         <div>
-        <label for="Cedula">Cedula:</label>
-        <input type="number" name="Cedula">
-        </div>
-         <div>
-        <label for="Correo">Correo:</label>
-        <input type="email" name="Correo">
-        </div>
-        <div>
-        <label for="Materias">Por Favor seleccione sus materias:</label>
-        <select name="Materias" id="">
-            <option value="Seleccionar">Seleccionar</option>
-            <option value="Matematica">Matematica</option>
-        </select>
-        </div>
-        <button type="submit">Cargar datos</button>
-    </form>
-</body>
+   <% if (typeof Validacion !== "undefined" && Validacion) { %>
+  <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
+<% } %>
+
+<%- include("./Parcials/MainViewParcials//ErrDup.ejs") %>
+
+<% if (typeof Confirmacion !== "undefined" && Confirmacion) { %>
+  <p>carga exitosa</p>
+<% } %>
+
+    <body class="bg-light">
+
+  <div class="container mt-5">
+    <div class="card shadow-lg">
+      <div class="card-body">
+        <h3 class="card-title mb-4 text-center">Registro de Estudiante</h3>
+
+        <form  action="/cargar" method="post">
+          <div class="mb-3">
+            <label for="Nombre" class="form-label">Nombre:</label>
+            <input type="text" class="form-control" name="Nombre" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="Apellido" class="form-label">Apellido:</label>
+            <input type="text" class="form-control" name="Apellido" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="Cedula" class="form-label">Cédula:</label>
+            <input type="number" class="form-control" name="Cedula" minlength="5" maxlength="8" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="Correo" class="form-label">Correo:</label>
+            <input type="email" class="form-control" name="Correo" required>
+          </div>
+
+        <div class="mb-4">
+  <label for="Materias1" class="form-label">Por favor seleccione sus materias:</label>
+  <select class="form-select mb-4 border-4" name="Materias1" required>
+    <option value="Seleccionar">Seleccionar</option>
+    <% materias.forEach(function(materia) { %>
+      <option value="<%= materia %>"><%= materia %></option>
+    <% }) %>
+  </select>
+  <label for="Materias2" class="form-label">Por favor seleccione sus materias:</label>
+  <select class="form-select  mb-4 border-4" name="Materias2" required>
+    <option value="<% null %>">Seleccionar</option>
+    <% materias.forEach(function(materia) { %>
+      <option value="<%= materia %>"><%= materia %></option>
+    <% }) %>
+  </select>
+</div>
+
+          <button type="submit" class="btn btn-primary w-100">Cargar datos</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+    </body>
