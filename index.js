@@ -25,12 +25,17 @@ const PreSeleccion = require("./src/Routes/PreSeleccion.router")
 app.use(PreSeleccion);
 
 
+app.use((req, res, next) => {
+  res.status(404);
+  res.render('err', { error: 'Página no encontrada (404)' });
+});
+
+// Middleware para manejo general de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500);
-  res.render("err")
-
-})
+  res.render('err', { error: err.message || 'Error interno del servidor' });
+});
 
 //Servidor:
 

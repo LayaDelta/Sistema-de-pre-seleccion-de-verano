@@ -1,8 +1,17 @@
 <body>
-    <form action="/Cargar" method="post">
+
+    <% if (typeof Validacion !== "undefined" && Validacion) { %>
+          <%- include("./Parcials/Validacion.ejs") %>
+        <% } %>
+        <%-include("./Parcials/ErrDup.ejs")%>
+        
+        <% if (typeof Confirmacion !== "undefined" && Confirmacion) { %>
+         <p> carga exitosa</p>
+        <% } %>
+    <form action="/" method="post">
         <div>
         <label for="Nombre">Nombre:</label>
-        <input type="text" name="Nombre">
+        <input  type="text" name="Nombre">
         </div>
         <div>
         <label for="Apellido">Apellido:</label>
@@ -12,9 +21,14 @@
         <label for="Cedula">Cedula:</label>
         <input type="number" name="Cedula">
         </div>
+         <div>
+        <label for="Correo">Correo:</label>
+        <input type="email" name="Correo">
+        </div>
         <div>
         <label for="Materias">Por Favor seleccione sus materias:</label>
         <select name="Materias" id="">
+            <option value="Seleccionar">Seleccionar</option>
             <option value="Matematica">Matematica</option>
         </select>
         </div>

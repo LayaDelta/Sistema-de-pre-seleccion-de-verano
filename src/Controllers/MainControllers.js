@@ -1,20 +1,109 @@
+const pool = require("../../Config/Conexion")
+
 const index = (req, res) => {
     res.render("MainView")
 
     }
 
     const submit = (req, res) => {
-        const MainFormulario = {
-            Nombre: req.body.Nombre,
-             Apellido: req.body.Apellido, 
-             Cedula: req.body.Cedula, 
-             Materias: req.body.Materias,};
+  const MainFormulario = {
+    Nombre: req.body.Nombre,
+    Apellido: req.body.Apellido,
+    Cedula: req.body.Cedula,
+    Correo: req.body.Correo,
+    Materias: req.body.Materias,
+    
+  };
 
-             const DateForm = [...Object.entries(MainFormulario)];
+  const sql = "INSERT INTO estudiantes (nombre, apellido, cedula, correo, materia) VALUES (?, ?, ?, ?, ?)";
 
-           res.render("../view/Parcials/Ver.ejs", {DateForm})
-       
+  const Validacion = false;
+  const Confirmacion = false;
+  const ErrorDup = false
+
+  const DateForm = [...Object.entries(MainFormulario)];
+
+  const camposVacios = Object.entries(MainFormulario).filter(
+    ([key, value]) => !value || value.trim() === "" || value === "Seleccionar"
+  );
+
+  if (camposVacios.length > 0) {
+    return res.render("../view/MainView.ejs", { Validacion: true, Mensaje: "Por favor, rellena todos los campos." }, console.log("error"));
+  }
+
+
+  const SubmitPr = new Promise((resolve, reject) => {
+    // Expresión regular para solo letras (mayúsculas, minúsculas y espacios)
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+
+    // Validamos nombre
+    if (!soloLetras.test(req.body.Nombre)) {
+      return reject( Validacion = true ,new error("El nombre no es válido."));
     }
+
+    // Validamos apellido
+    if (!soloLetras.test(req.body.Apellido)) {
+      return reject( Validacion = true ,new error("El Apellido no es válido."));
+    }
+    if (req.body.Cedula.length < 5 || req.body.Cedula.length > 8) {
+    return res.render("../view/MainView.ejs", { 
+      Validacion: true, 
+      Mensaje: "La cédula debe tener entre 5 y 8 caracteres.", 
+    });
+  }
+
+  const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!correoValido.test(req.body.Correo)) {
+    return reject( Validacion = true ,new error("Correo no es válido."));
+  }
+
+    if (req.body.Materias == "Seleccionar" ) {
+      return reject( Validacion = true ,new error("seleccion no es válido."));
+    }
+
+    // Si todo está bien
+    resolve();
+  });
+
+  
+
+  SubmitPr.then(() => {
+    // Si pasó las validaciones
+    pool.query(
+    sql,
+    [
+      MainFormulario.Nombre,
+      MainFormulario.Apellido,
+      MainFormulario.Cedula,
+      MainFormulario.Correo,
+      MainFormulario.Materias
+    ],
+    (err, results) => {
+       if (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.render("../view/MainView.ejs", {ErrorDup: true});
+    }
+    return res.status(500).send("Error en servidor.");}
+      if (err) {
+        console.error("Error al insertar en la base de datos:", err);
+        return res.status(500).send("Error en servidor.");
+      }
+     res.render("../view/MainView.ejs", {Confirmacion: true});
+    }
+  )
+})
+  .catch((err) => {
+    // Ya manejamos el error en el reject con res.render, así que no hace falta nada aquí
+     res.render("../view/MainView.ejs", { Validacion: true });
+  })};
+
+
+       
+    
+
+
+
+
 
 module.exports = {
     index,
