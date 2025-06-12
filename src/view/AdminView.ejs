@@ -17,6 +17,7 @@
           <th>Materia</th>
           <th>Materia 2</th>
           <th>Editar</th>
+          <th>Eliminar</th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +35,13 @@
           <a href="/<%= estudiante.id %>" class="btn btn-warning btn-sm">
             <i class="bi bi-pencil-square"></i> Editar
           </a>
+          <td>
+  <form action="/eliminar/<%= estudiante.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este estudiante?');">
+    <button type="submit" class="btn btn-danger btn-sm">
+      <i class="bi bi-trash"></i> Eliminar
+    </button>
+  </form>
+</td>
         </td>
             </tr>
           <% }) %>
