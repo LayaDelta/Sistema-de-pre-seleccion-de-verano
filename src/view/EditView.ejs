@@ -1,6 +1,7 @@
+ <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
+<%- include("./Parcials/MainViewParcials//ErrDup.ejs") %>
 <h2 class="mb-4">Editar Estudiante</h2>
-
-  <form action="/actualizar/<%= estudiante.id %>" method="post">
+  <form action="/<%= estudiante.id %>" method="post">
     <div class="mb-3">
       <label for="Nombre" class="form-label">Nombre</label>
       <input type="text" class="form-control" name="Nombre" value="<%= estudiante.nombre %>" required>

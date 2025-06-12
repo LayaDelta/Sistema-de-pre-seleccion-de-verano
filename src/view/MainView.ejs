@@ -1,11 +1,6 @@
 <body>
-
-   <% if (typeof Validacion !== "undefined" && Validacion) { %>
-  <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
-<% } %>
-
+ <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
 <%- include("./Parcials/MainViewParcials//ErrDup.ejs") %>
-
 <% if (typeof Confirmacion !== "undefined" && Confirmacion) { %>
   <p>carga exitosa</p>
 <% } %>
@@ -17,7 +12,7 @@
       <div class="card-body">
         <h3 class="card-title mb-4 text-center">Registro de Estudiante</h3>
 
-        <form  action="/cargar" method="post">
+        <form  action="/" method="post">
           <div class="mb-3">
             <label for="Nombre" class="form-label">Nombre:</label>
             <input type="text" class="form-control" name="Nombre" required>

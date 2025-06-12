@@ -1,6 +1,5 @@
 const pool = require("../../Config/Conexion")
-
-
+const Validacion = require("../Controllers/MainControllers")
  
 const index = (req, res) => {
    pool.query("SELECT * FROM estudiantes", (err, results) => {
@@ -27,8 +26,21 @@ const index = (req, res) => {
   });
     }
 
+    const SubmitId = (req, res) => {
+       const id = req.params.id;
+
+  const error = Validacion.validarFormulario(form)
+  if(error) {
+    return editID() 
+  }}
+  
+  
+  
+
+    
 
     module.exports = {
         index,
         editID,
+        SubmitId,
     }

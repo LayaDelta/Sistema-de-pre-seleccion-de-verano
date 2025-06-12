@@ -4,6 +4,6 @@ const router = express.Router();
 const controller = require("../Controllers/MainControllers")
 
 router.get(`/`, controller.index)
-router.post("/cargar", controller.submit)
+router.post("/", controller.submit)
 
 module.exports = router;
