@@ -1,4 +1,4 @@
-const pool = require("../Config/Conexion").promise();
+const pool = require("../../Config/Conexion").promise();
 
 const contarMaterias = async (materias) => {
   const [result] = await pool.query(`SELECT materia, materia2 FROM estudiantes`);
@@ -32,7 +32,7 @@ const submit = async (req, res) => {
     Cedula: req.body.Cedula,
     Correo: req.body.Correo,
     Materias1: req.body.Materias1,
-    Materias2: req.body.Materias2
+    Materias2: req.body.Materias2,
   };
 
   const error = validarFormulario(form, materias);
@@ -70,9 +70,10 @@ const submit = async (req, res) => {
   } catch (err) {
     if (err.code === "ER_DUP_ENTRY") {
       return res.render("MainView", {
-        ErrorDup: true,
+        Validacion: true,
         formData: form,
-        conteoMaterias
+        conteoMaterias,
+        Mensaje: "cedula o correo ya registrado"
       });
     }
     console.error("Error en BD:", err);

@@ -59,7 +59,7 @@ const SubmitId = (req, res) => {
     Apellido: req.body.Apellido,
     Cedula: req.body.Cedula,
     Correo: req.body.Correo,
-    Materias: req.body.Materias1,
+    Materias1: req.body.Materias1,
     Materias2: req.body.Materias2,
   };
 

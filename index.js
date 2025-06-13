@@ -21,7 +21,7 @@ const mainRouter = require("./src/Routes/mainRouter")
 //Usa la constante para llamar a la ruta
 app.use(mainRouter);
 
-const AdminView = require("./src/Routes/PreSeleccion.router")
+const AdminView = require("./src/Routes/AdminRouter")
 app.use(AdminView);
 
 
