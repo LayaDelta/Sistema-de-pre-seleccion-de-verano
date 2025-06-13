@@ -1,59 +1,94 @@
-<body>
+
  <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
 <%- include("./Parcials/MainViewParcials//ErrDup.ejs") %>
 <% if (typeof Confirmacion !== "undefined" && Confirmacion) { %>
   <p>carga exitosa</p>
 <% } %>
 
-    <body class="bg-light">
+   
+ <div class="container mt-5">
+    <div class="row">
+      <!-- Formulario -->
+      <div class="col-md-5">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <h3 class="card-title mb-4 text-center">Registro de Estudiante</h3>
 
-  <div class="container mt-5">
-    <div class="card shadow-lg">
-      <div class="card-body">
-        <h3 class="card-title mb-4 text-center">Registro de Estudiante</h3>
+            <% if (typeof Confirmacion !== "undefined" && Confirmacion) { %>
+              <div class="alert alert-success">Carga exitosa</div>
+            <% } %>
 
-        <form  action="/" method="post">
-          <div class="mb-3">
-            <label for="Nombre" class="form-label">Nombre:</label>
-            <input type="text" class="form-control" name="Nombre" required>
+            <form action="/" method="post">
+              <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" name="Nombre" value="<%= formData.Nombre || '' %>" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="Apellido" class="form-label">Apellido:</label>
+                <input type="text" class="form-control" name="Apellido" value="<%= formData.Apellido || '' %>" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="Cedula" class="form-label">Cédula:</label>
+                <input type="number" class="form-control" name="Cedula" value="<%= formData.Cedula || '' %>" minlength="5" maxlength="8" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="Correo" class="form-label">Correo:</label>
+                <input type="email" class="form-control" name="Correo" value="<%= formData.Correo || '' %>" required>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">Materia 1:</label>
+                <select class="form-select mb-3" name="Materias1" required>
+                  <option value="Seleccionar">Seleccionar</option>
+                  <% materias.forEach(m => { %>
+                    <option value="<%= m %>" <%= formData.Materias === m ? 'selected' : '' %>><%= m %></option>
+                  <% }) %>
+                </select>
+
+                <label class="form-label">Materia 2:</label>
+                <select class="form-select mb-4" name="Materias2" required>
+                  <option value="Seleccionar">Seleccionar</option>
+                  <% materias.forEach(m => { %>
+                    <option value="<%= m %>" <%= formData.Materias2 === m ? 'selected' : '' %>><%= m %></option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Cargar datos</button>
+            </form>
           </div>
+        </div>
+      </div>
 
-          <div class="mb-3">
-            <label for="Apellido" class="form-label">Apellido:</label>
-            <input type="text" class="form-control" name="Apellido" required>
+      <!-- Tabla de materias -->
+      <div class="col-md-7">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <h4 class="card-title mb-3 text-center">Cantidad de estudiantes por materia</h4>
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Materia</th>
+                  <th>Cantidad de estudiantes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let materia in conteoMaterias) { %>
+                  <tr>
+                    <td><%= materia %></td>
+                    <td><%= conteoMaterias[materia] %></td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+
           </div>
-
-          <div class="mb-3">
-            <label for="Cedula" class="form-label">Cédula:</label>
-            <input type="number" class="form-control" name="Cedula" minlength="5" maxlength="8" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="Correo" class="form-label">Correo:</label>
-            <input type="email" class="form-control" name="Correo" required>
-          </div>
-
-        <div class="mb-4">
-  <label for="Materias1" class="form-label">Por favor seleccione sus materias:</label>
-  <select class="form-select mb-4 border-4" name="Materias1" required>
-    <option value="Seleccionar">Seleccionar</option>
-    <% materias.forEach(function(materia) { %>
-      <option value="<%= materia %>"><%= materia %></option>
-    <% }) %>
-  </select>
-  <label for="Materias2" class="form-label">Por favor seleccione sus materias:</label>
-  <select class="form-select  mb-4 border-4" name="Materias2" required>
-    <option value="<% null %>">Seleccionar</option>
-    <% materias.forEach(function(materia) { %>
-      <option value="<%= materia %>"><%= materia %></option>
-    <% }) %>
-  </select>
-</div>
-
-          <button type="submit" class="btn btn-primary w-100">Cargar datos</button>
-        </form>
-
+        </div>
       </div>
     </div>
   </div>
-    </body>
+

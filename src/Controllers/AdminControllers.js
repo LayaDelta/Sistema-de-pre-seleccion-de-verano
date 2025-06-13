@@ -3,35 +3,38 @@ const Validacion = require("../Controllers/MainControllers");  //Desde aqui se p
 
 // Mostrar listado de estudiantes
 const index = (req, res) => {
-  // Capturamos el parámetro de búsqueda desde la query string (?busqueda=algo)
   const { busqueda } = req.query;
 
-  // Definimos la consulta SQL base
   let sql = "SELECT * FROM estudiantes";
   const params = [];
 
-  // Si hay algo escrito en la barra de búsqueda
   if (busqueda) {
-    // Modificamos la consulta SQL para filtrar por id, nombre, apellido, cédula o correo
     sql += " WHERE id LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR cedula LIKE ? OR correo LIKE ?";
-    
-    // Creamos una variable para envolver la búsqueda entre % %, para usar con LIKE
     const likeBusqueda = `%${busqueda}%`;
-
-    // Agregamos ese valor 5 veces al array params, ya que la consulta usa 5 signos de ?
     params.push(likeBusqueda, likeBusqueda, likeBusqueda, likeBusqueda, likeBusqueda);
   }
 
-  // Ejecutamos la consulta con la base de datos usando pool.query
   pool.query(sql, params, (err, results) => {
     if (err) {
-      // Si ocurre algún error al consultar, lo mostramos en consola y devolvemos error 500 al cliente
       console.error("Error al obtener estudiantes:", err);
       return res.status(500).send("Error en la base de datos.");
     }
 
-    // Si todo va bien, renderizamos la vista AdminView.ejs, pasando el array de estudiantes como variable
-    res.render("AdminView.ejs", { estudiantes: results });
+    // Organizar estudiantes por materia
+    const materias = {};
+
+    results.forEach(estudiante => {
+      if (estudiante.materia) {
+        if (!materias[estudiante.materia]) materias[estudiante.materia] = [];
+        materias[estudiante.materia].push(estudiante);
+      }
+      if (estudiante.materia2) {
+        if (!materias[estudiante.materia2]) materias[estudiante.materia2] = [];
+        materias[estudiante.materia2].push(estudiante);
+      }
+    });
+
+    res.render("AdminView.ejs", { estudiantes: results, materias });
   });
 };
 
@@ -56,7 +59,7 @@ const SubmitId = (req, res) => {
     Apellido: req.body.Apellido,
     Cedula: req.body.Cedula,
     Correo: req.body.Correo,
-    Materias: req.body.Materias,
+    Materias: req.body.Materias1,
     Materias2: req.body.Materias2,
   };
 

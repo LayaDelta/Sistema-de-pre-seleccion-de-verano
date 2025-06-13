@@ -1,7 +1,7 @@
  <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
 <%- include("./Parcials/MainViewParcials//ErrDup.ejs") %>
 <h2 class="mb-4">Editar Estudiante</h2>
-  <form action="/<%= estudiante.id %>" method="post">
+  <form action="/estudiante/<%= estudiante.id %>" method="post">
     <div class="mb-3">
       <label for="Nombre" class="form-label">Nombre</label>
       <input type="text" class="form-control" name="Nombre" value="<%= estudiante.nombre %>" required>
@@ -14,22 +14,32 @@
 
     <div class="mb-3">
       <label for="Cedula" class="form-label">Cédula</label>
-      <input type="number" class="form-control" name="Cedula" value="<%= estudiante.cedula %>" required>
+      <input type="number" class="form-control" name="Cedula" value="<%= estudiante.cedula %>" minlength="5" maxlength="8" required>
     </div>
 
     <div class="mb-3">
       <label for="Correo" class="form-label">Correo</label>
-      <input type="email" class="form-control" name="Correo" value="<%= estudiante.correo %>" required>
+      <input type="email" class="form-control" name="Correo" value="<%= estudiante.correo %>"  required>
     </div>
 
     <div class="mb-3">
-      <label for="Materias" class="form-label">Materia 1</label>
-      <input type="text" class="form-control" name="Materias" value="<%= estudiante.materia %>" required>
+      <label for="Materias1" class="form-label">Materia 1</label>
+      <select class="form-select mb-4 border-4" name="Materias1" required>
+    <option value="<% null %>">Seleccionar</option>
+    <% materias.forEach(function(materia) { %>
+      <option value="<%= materia %>"><%= materia %></option>
+    <% }) %>
+  </select>
     </div>
 
     <div class="mb-3">
       <label for="Materias2" class="form-label">Materia 2</label>
-      <input type="text" class="form-control" name="Materias2" value="<%= estudiante.materia2 %>">
+     <select class="form-select  mb-4 border-4" name="Materias2">
+    <option value="<% null %>">Seleccionar</option>
+    <% materias.forEach(function(materia) { %>
+      <option value="<%= materia %>"><%= materia %></option>
+    <% }) %>
+  </select>
     </div>
 
     <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar cambios</button>
