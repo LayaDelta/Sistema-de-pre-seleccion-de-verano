@@ -1,55 +1,65 @@
 
   <div class="container mt-5">
-    <h2 class="mb-4">Listado de Estudiantes</h2>
- <a class="navbar-brand" href="/">Inicio</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <table class="table table-bordered table-striped">
-      <thead class="table-primary">
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Cédula</th>
-          <th>Correo</th>
-          <th>Materia</th>
-          <th>Materia 2</th>
-          <th>Editar</th>
-          <th>Eliminar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if (estudiantes.length > 0) { %>
-          <% estudiantes.forEach(function(estudiante) { %>
-            <tr>
-              <td><%= estudiante.id %></td>
-              <td><%= estudiante.nombre %></td>
-              <td><%= estudiante.apellido %></td>
-              <td><%= estudiante.cedula %></td>
-              <td><%= estudiante.correo %></td>
-              <td><%= estudiante.materia %></td>
-              <td><%= estudiante.materia2 %></td>
-               <td>
-          <a href="/<%= estudiante.id %>" class="btn btn-warning btn-sm">
-            <i class="bi bi-pencil-square"></i> Editar
-          </a>
-          <td>
-  <form action="/eliminar/<%= estudiante.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este estudiante?');">
-    <button type="submit" class="btn btn-danger btn-sm">
-      <i class="bi bi-trash"></i> Eliminar
-    </button>
+  <h2 class="mb-4">Listado de Estudiantes</h2>
+
+  <!-- Formulario de búsqueda: método GET hacia la misma ruta /Administrador -->
+  <form class="d-flex mb-4" method="get" action="/Administrador">
+    <!-- Input de texto para escribir lo que se quiere buscar -->
+    <input class="form-control me-2" type="search" name="busqueda" placeholder="Buscar estudiante..." aria-label="Buscar">
+    <!-- Botón de enviar búsqueda -->
+    <button class="btn btn-outline-primary" type="submit">Buscar</button>
   </form>
-</td>
-        </td>
-            </tr>
-          <% }) %>
-        <% } else { %>
+
+  <!-- Tabla que muestra todos los registros de estudiantes -->
+  <table class="table table-bordered table-striped">
+    <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Cédula</th>
+        <th>Correo</th>
+        <th>Materia</th>
+        <th>Materia 2</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (estudiantes.length > 0) { %>
+        <% estudiantes.forEach(function(estudiante) { %>
+          <!-- Por cada estudiante, se crea una fila con sus datos -->
           <tr>
-            <td colspan="7" class="text-center">No hay registros en la base de datos.</td>
+            <td><%= estudiante.id %></td>
+            <td><%= estudiante.nombre %></td>
+            <td><%= estudiante.apellido %></td>
+            <td><%= estudiante.cedula %></td>
+            <td><%= estudiante.correo %></td>
+            <td><%= estudiante.materia %></td>
+            <td><%= estudiante.materia2 %></td>
+            <td>
+              <!-- Botón para editar este estudiante -->
+              <a href="/<%= estudiante.id %>" class="btn btn-warning btn-sm">
+                <i class="bi bi-pencil-square"></i> Editar
+              </a>
+            </td>
+            <td>
+              <!-- Botón para eliminar este estudiante, con confirmación -->
+              <form action="/eliminar/<%= estudiante.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este estudiante?');">
+                <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="bi bi-trash"></i> Eliminar
+                </button>
+              </form>
+            </td>
           </tr>
-        <% } %>
-      </tbody>
-    </table>
-  </div>
+        <% }) %>
+      <% } else { %>
+        <!-- Si no hay registros, mostramos un mensaje -->
+        <tr>
+          <td colspan="9" class="text-center">No hay registros en la base de datos.</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
