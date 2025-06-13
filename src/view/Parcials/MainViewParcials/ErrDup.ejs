@@ -1,6 +1,14 @@
-<% if (typeof ErrorDup !== "undefined" && ErrorDup) { %>
+<% if (typeof ErrorDup !== "undefined" && ErrorDup) { %> 
+  <!-- Verifica si la variable ErrorDup está definida y es verdadera -->
+
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <p>Correo o cedula ya registrados</p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    <!-- Muestra una alerta de advertencia que se puede cerrar -->
+
+    <p>Correo o cedula ya registrados</p> 
+    <!-- Mensaje que informa sobre la duplicidad -->
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button> 
+    <!-- Botón para cerrar la alerta usando Bootstrap -->
   </div>
+
 <% } %>

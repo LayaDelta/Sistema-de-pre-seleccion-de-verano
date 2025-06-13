@@ -1,4 +1,7 @@
+<!-- Contenedor principal con margen superior -->
 <div class="container mt-5">
+
+  <!-- Encabezado con título y contador total de estudiantes -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="mb-0">Listado General de Estudiantes</h2>
     <span class="badge bg-success fs-5">
@@ -6,13 +9,19 @@
     </span>
   </div>
 
-  <!-- Formulario de búsqueda -->
+  <!-- Formulario de búsqueda de estudiantes -->
   <form class="d-flex mb-4" method="get" action="/Administrador">
-    <input class="form-control me-2" type="search" name="busqueda" placeholder="Buscar estudiante..." aria-label="Buscar">
+    <input
+      class="form-control me-2"
+      type="search"
+      name="busqueda"
+      placeholder="Buscar estudiante..."
+      aria-label="Buscar"
+    >
     <button class="btn btn-outline-primary" type="submit">Buscar</button>
   </form>
 
-  <!-- Tabla general -->
+  <!-- Tabla que muestra listado general de estudiantes -->
   <table class="table table-bordered table-striped">
     <thead class="table-primary">
       <tr>
@@ -29,6 +38,7 @@
     </thead>
     <tbody>
       <% if (estudiantes.length > 0) { %>
+        <!-- Itera y muestra cada estudiante -->
         <% estudiantes.forEach(function(estudiante) { %>
           <tr>
             <td><%= estudiante.id %></td>
@@ -39,76 +49,96 @@
             <td><%= estudiante.materia %></td>
             <td><%= estudiante.materia2 %></td>
             <td>
+              <!-- Botón para editar estudiante -->
               <a href="/estudiante/<%= estudiante.id %>" class="btn btn-warning btn-sm">Editar</a>
             </td>
             <td>
-              <form action="/eliminar/<%= estudiante.id %>" method="POST" onsubmit="return confirm('¿Seguro de eliminar este estudiante?');">
+              <!-- Formulario para eliminar estudiante con confirmación -->
+              <form
+                action="/eliminar/<%= estudiante.id %>"
+                method="POST"
+                onsubmit="return confirm('¿Seguro de eliminar este estudiante?');"
+              >
                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
               </form>
             </td>
           </tr>
         <% }) %>
       <% } else { %>
+        <!-- Mensaje cuando no hay estudiantes registrados -->
         <tr>
           <td colspan="9" class="text-center">No hay registros en la base de datos.</td>
         </tr>
       <% } %>
     </tbody>
   </table>
-<h2 class="mt-5">Listado de Estudiantes por Materia</h2>
 
-<% if (Object.keys(materias).length > 0) { %>
-  <% 
-    // Convertir objeto materias en arreglo de [materia, estudiantes[]]
-    const materiasArray = Object.entries(materias);
-    
-    // Ordenar por cantidad de estudiantes descendente
-    materiasArray.sort((a, b) => b[1].length - a[1].length);
-  %>
+  <!-- Sección para listado de estudiantes agrupados por materia -->
+  <h2 class="mt-5">Listado de Estudiantes por Materia</h2>
 
-  <% materiasArray.forEach(([materia, estudiantes]) => { %>
-    <div class="mt-4">
-      <h4>
-        Materia: <%= materia %>
-        <span class="badge bg-primary ms-2">
-          <%= estudiantes.length %> estudiante<%= estudiantes.length !== 1 ? 's' : '' %>
-        </span>
-      </h4>
+  <% if (Object.keys(materias).length > 0) { %>
+    <% 
+      // Convierte el objeto materias en un arreglo de pares [materia, estudiantes[]]
+      const materiasArray = Object.entries(materias);
+      
+      // Ordena las materias de forma descendente según la cantidad de estudiantes
+      materiasArray.sort((a, b) => b[1].length - a[1].length);
+    %>
 
-      <table class="table table-bordered table-striped mt-2">
-        <thead class="table-secondary">
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Cédula</th>
-            <th>Correo</th>
-            <th>Editar</th>
-            <th>Eliminar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% estudiantes.forEach(function(estudiante) { %>
+    <!-- Itera sobre cada materia con su lista de estudiantes -->
+    <% materiasArray.forEach(([materia, estudiantes]) => { %>
+      <div class="mt-4">
+        <h4>
+          Materia: <%= materia %>
+          <span class="badge bg-primary ms-2">
+            <%= estudiantes.length %> estudiante<%= estudiantes.length !== 1 ? 's' : '' %>
+          </span>
+        </h4>
+
+        <!-- Tabla de estudiantes de la materia actual -->
+        <table class="table table-bordered table-striped mt-2">
+          <thead class="table-secondary">
             <tr>
-              <td><%= estudiante.id %></td>
-              <td><%= estudiante.nombre %></td>
-              <td><%= estudiante.apellido %></td>
-              <td><%= estudiante.cedula %></td>
-              <td><%= estudiante.correo %></td>
-              <td>
-                <a href="/estudiante/<%= estudiante.id %>" class="btn btn-warning btn-sm">Editar</a>
-              </td>
-              <td>
-                <form action="/eliminar/<%= estudiante.id %>" method="POST" onsubmit="return confirm('¿Seguro de eliminar?');">
-                  <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                </form>
-              </td>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Cédula</th>
+              <th>Correo</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  <% }) %>
-<% } else { %>
-  <p class="text-center">No hay registros por materia.</p>
-<% } %>
+          </thead>
+          <tbody>
+            <% estudiantes.forEach(function(estudiante) { %>
+              <tr>
+                <td><%= estudiante.id %></td>
+                <td><%= estudiante.nombre %></td>
+                <td><%= estudiante.apellido %></td>
+                <td><%= estudiante.cedula %></td>
+                <td><%= estudiante.correo %></td>
+                <td>
+                  <!-- Botón para editar estudiante -->
+                  <a href="/estudiante/<%= estudiante.id %>" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+                <td>
+                  <!-- Formulario para eliminar estudiante con confirmación -->
+                  <form
+                    action="/eliminar/<%= estudiante.id %>"
+                    method="POST"
+                    onsubmit="return confirm('¿Seguro de eliminar?');"
+                  >
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <!-- Mensaje si no hay estudiantes agrupados por materia -->
+    <p class="text-center">No hay registros por materia.</p>
+  <% } %>
+
+</div>

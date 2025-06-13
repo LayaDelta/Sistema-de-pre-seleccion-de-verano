@@ -1,9 +1,17 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express"); 
+// Importa Express para crear el router
 
-const controller = require("../Controllers/MainControllers")
+const router = express.Router(); 
+// Crea una instancia del router de Express
 
-router.get("/", controller.index)
-router.post("/", controller.submit)
+const controller = require("../Controllers/MainControllers"); 
+// Importa el controlador principal para manejar las rutas
 
-module.exports = router;
+router.get("/", controller.index); 
+// Define la ruta GET "/" que llama al método index del controlador
+
+router.post("/", controller.submit); 
+// Define la ruta POST "/" que llama al método submit del controlador
+
+module.exports = router; 
+// Exporta el router para que pueda usarse en otras partes de la aplicación

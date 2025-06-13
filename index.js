@@ -1,41 +1,29 @@
-require("dotenv").config
+// CARGA DE MÓDULOS Y CONSTANTES
+
+// Carga las variables de entorno desde un archivo .env
+require("dotenv").config();
+
+// Importa el framework Express
 const express = require("express");
+// Inicializa la aplicación Express
 const app = express();
-const path = require("path")
-const layouts = require("express-ejs-layouts")
 
-//Deteccion de datos del body
-app.use(express.urlencoded({extended: false}))
+// Importa el módulo path para trabajar con rutas de archivos
+const path = require("path");
 
-//Layaout Predeterminado.
-app.use(layouts)
-app.set("layout", "layouts/layout")
+// Importa el middleware de layouts para EJS
+const layouts = require("express-ejs-layouts");
 
-//Renderisado de vistas
-app.set("view engine", "ejs")
-app.set("views", path.join(__dirname, "src/view"));
+// IMPORTACIÓN DE RUTAS
 
-//rutas.
-//establece la ruta como una constante.
-const mainRouter = require("./src/Routes/mainRouter")
-//Usa la constante para llamar a la ruta
-app.use(mainRouter);
+// Importa las rutas principales desde mainRouter
+const mainRouter = require("./src/Routes/mainRouter");
+// Importa las rutas para la vista de administrador
+const AdminView = require("./src/Routes/AdminRouter");
 
-const AdminView = require("./src/Routes/AdminRouter")
-app.use(AdminView);
+// VARIABLES GLOBALES
 
-
-app.use((req, res, next) => {
-  res.status(404);
-  res.render('err', { error: 'Página no encontrada (404)' });
-});
-
-// Middleware para manejo general de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500);
-  res.render('err', { error: err.message || 'Error interno del servidor' });
-});
+// Crea una variable global llamada materias disponible en todas las vistas
 app.locals.materias = [
   "Matemática I",
   "Fundamentos de la Informática",
@@ -59,9 +47,57 @@ app.locals.materias = [
   "Electiva II"
 ];
 
-//Servidor:
+// MIDDLEWARES
 
-//establece el puerto y las variables de entorno
-const PORT = process.env.PORT || 3000
-//se asegura de que este escuchando por el puerto definido
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
+// Middleware para detectar y procesar datos enviados desde formularios
+app.use(express.urlencoded({ extended: false }));
+
+// Usa el middleware de layouts en la aplicación
+app.use(layouts);
+
+// CONFIGURACIÓN DE LA APLICACIÓN
+
+// Configura el layout predeterminado que se usará en las vistas
+app.set("layout", "layouts/layout");
+
+// Configura el motor de plantillas que se va a utilizar (EJS)
+app.set("view engine", "ejs");
+
+// Configura la carpeta donde se encuentran las vistas EJS
+app.set("views", path.join(__dirname, "src/view"));
+
+// USO DE RUTAS
+
+// Usa las rutas principales en la aplicación
+app.use(mainRouter);
+
+// Usa las rutas del administrador en la aplicación
+app.use(AdminView);
+
+// MIDDLEWARES DE ERROR
+
+// Middleware que captura las rutas no existentes (404)
+app.use((req, res, next) => {
+  // Establece el código de estado 404
+  res.status(404);
+  // Renderiza una vista de error personalizada para el 404
+  res.render('err', { error: 'Página no encontrada (404)' });
+});
+
+// Middleware para manejar errores generales de la aplicación
+app.use((err, req, res, next) => {
+  // Muestra el error en consola
+  console.error(err.stack);
+  // Establece el código de estado del error, o usa 500 por defecto
+  res.status(err.status || 500);
+  // Renderiza una vista de error mostrando el mensaje
+  res.render('err', { error: err.message || 'Error interno del servidor' });
+});
+
+// SERVIDOR
+
+// Define el puerto donde se ejecutará el servidor, leyendo desde variables de entorno o usando 3000 por defecto
+const PORT = process.env.PORT || 3000;
+
+// Inicia el servidor en el puerto definido y muestra un mensaje en consola con la URL local
+app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

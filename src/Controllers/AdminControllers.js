@@ -1,7 +1,7 @@
 const pool = require("../../Config/Conexion");
-const Validacion = require("../Controllers/MainControllers");  //Desde aqui se pide validacionFormulario
+const Validacion = require("../Controllers/MainControllers");  // Aquí se importa la validación reutilizable
 
-// Mostrar listado de estudiantes
+// Mostrar listado de estudiantes con búsqueda y agrupación por materias
 const index = (req, res) => {
   const { busqueda } = req.query;
 
@@ -20,7 +20,7 @@ const index = (req, res) => {
       return res.status(500).send("Error en la base de datos.");
     }
 
-    // Organizar estudiantes por materia
+    // Agrupar estudiantes por materias
     const materias = {};
 
     results.forEach(estudiante => {
@@ -38,7 +38,7 @@ const index = (req, res) => {
   });
 };
 
-// Mostrar formulario de edición
+// Mostrar formulario de edición con datos del estudiante
 const editID = (req, res) => {
   const id = req.params.id;
 
@@ -50,7 +50,7 @@ const editID = (req, res) => {
   });
 };
 
-//  actualizar estudiante
+// Actualizar estudiante luego de validación
 const SubmitId = (req, res) => {
   const id = req.params.id;
 
@@ -63,10 +63,10 @@ const SubmitId = (req, res) => {
     Materias2: req.body.Materias2,
   };
 
-  // Validar con la función reutilizable
+  // Validar datos
   const error = Validacion.validarFormulario(form);
   if (error) {
-    // Si hay error, mostrara la  vista de edición con los datos actuales del form y el mensaje
+    // En caso de error, re-renderizar formulario con datos ingresados y mensaje de error
     return res.render("../view/EditView.ejs", {
       estudiante: {
         id,
@@ -74,7 +74,7 @@ const SubmitId = (req, res) => {
         apellido: form.Apellido,
         cedula: form.Cedula,
         correo: form.Correo,
-        materia: form.Materias,
+        materia: form.Materias1,
         materia2: form.Materias2
       },
       Validacion: true,
@@ -82,48 +82,50 @@ const SubmitId = (req, res) => {
     });
   }
 
-  //actualizar en base de datos si paso las validaciones
+  // Actualizar en la base de datos
   const sql = `UPDATE estudiantes SET nombre = ?, apellido = ?, cedula = ?, correo = ?, materia = ?, materia2 = ? WHERE id = ?`;
 
   pool.query(
     sql,
-    [form.Nombre, form.Apellido, form.Cedula, form.Correo, form.Materias, form.Materias2, id],
+    [form.Nombre, form.Apellido, form.Cedula, form.Correo, form.Materias1, form.Materias2, id],
     (err, result) => {
-      if (err) return res.status(500).send("Error en la base de datos al actualizar.");
-
-      // renderizar confirmación
+      if (err) {
+        console.error("Error al actualizar estudiante:", err);
+        return res.status(500).send("Error en la base de datos al actualizar.");
+      }
       res.redirect("/Administrador");
     }
   );
 };
 
+// Eliminar estudiante y reordenar IDs para que queden consecutivos
 const eliminar = (req, res) => {
   const id = req.params.id;
- pool.query("DELETE FROM estudiantes WHERE id = ?", [id], (error, resultado) => {
+
+  pool.query("DELETE FROM estudiantes WHERE id = ?", [id], (error) => {
     if (error) {
       console.error("Error al eliminar:", error);
       return res.status(500).send("Error al eliminar estudiante.");
     }
 
-    // Actualizar IDs para que queden consecutivos
+    // Reordenar IDs: este proceso puede variar según la base de datos
+    // En MySQL, esta secuencia de consultas no puede ejecutarse así directamente desde node-mysql
+    // Se recomienda hacerlas separadas o reconsiderar si es necesario mantener IDs consecutivos
     const sqlResetIds = `
       SET @count = 0;
       UPDATE estudiantes SET id = (@count := @count + 1);
       ALTER TABLE estudiantes AUTO_INCREMENT = 1;
     `;
 
-    pool.query(sqlResetIds, (error) => {
-      if (error) {
-        console.error("Error al reordenar IDs:", error);
+    pool.query(sqlResetIds, (error2) => {
+      if (error2) {
+        console.error("Error al reordenar IDs:", error2);
         return res.status(500).send("Error al reordenar IDs.");
       }
-      res.redirect("/Administrador");  // redirige de nuevo al listado
-});
+      res.redirect("/Administrador");
+    });
   });
-}
-
-
-
+};
 
 module.exports = {
   index,

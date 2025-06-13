@@ -1,47 +1,73 @@
- <%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
+<!-- Inclusión de parcial para mostrar validaciones específicas -->
+<%- include("./Parcials/MainViewParcials//Validacion.ejs") %>
+
+<!-- Inclusión de parcial para mostrar errores de duplicados -->
 <%- include("./Parcials/MainViewParcials//ErrDup.ejs") %>
+
+<!-- Título del formulario de edición -->
 <h2 class="mb-4">Editar Estudiante</h2>
-  <form action="/estudiante/<%= estudiante.id %>" method="post">
-    <div class="mb-3">
-      <label for="Nombre" class="form-label">Nombre</label>
-      <input type="text" class="form-control" name="Nombre" value="<%= estudiante.nombre %>" required>
-    </div>
 
-    <div class="mb-3">
-      <label for="Apellido" class="form-label">Apellido</label>
-      <input type="text" class="form-control" name="Apellido" value="<%= estudiante.apellido %>" required>
-    </div>
+<!-- Formulario que envía datos por POST a la ruta con el id del estudiante -->
+<form action="/estudiante/<%= estudiante.id %>" method="post">
 
-    <div class="mb-3">
-      <label for="Cedula" class="form-label">Cédula</label>
-      <input type="number" class="form-control" name="Cedula" value="<%= estudiante.cedula %>" minlength="5" maxlength="8" required>
-    </div>
+  <!-- Campo para editar el Nombre -->
+  <div class="mb-3">
+    <label for="Nombre" class="form-label">Nombre</label>
+    <!-- Valor por defecto es el nombre actual del estudiante -->
+    <input type="text" class="form-control" name="Nombre" value="<%= estudiante.nombre %>" required>
+  </div>
 
-    <div class="mb-3">
-      <label for="Correo" class="form-label">Correo</label>
-      <input type="email" class="form-control" name="Correo" value="<%= estudiante.correo %>"  required>
-    </div>
+  <!-- Campo para editar el Apellido -->
+  <div class="mb-3">
+    <label for="Apellido" class="form-label">Apellido</label>
+    <input type="text" class="form-control" name="Apellido" value="<%= estudiante.apellido %>" required>
+  </div>
 
-    <div class="mb-3">
-      <label for="Materias1" class="form-label">Materia 1</label>
-      <select class="form-select mb-4 border-4" name="Materias1" required>
-    <option value="<% null %>">Seleccionar</option>
-    <% materias.forEach(function(materia) { %>
-      <option value="<%= materia %>"><%= materia %></option>
-    <% }) %>
-  </select>
-    </div>
+  <!-- Campo para editar la Cédula -->
+  <div class="mb-3">
+    <label for="Cedula" class="form-label">Cédula</label>
+    <!-- minlength y maxlength para validación de longitud -->
+    <input type="number" class="form-control" name="Cedula" value="<%= estudiante.cedula %>" minlength="5" maxlength="8" required>
+  </div>
 
-    <div class="mb-3">
-      <label for="Materias2" class="form-label">Materia 2</label>
-     <select class="form-select  mb-4 border-4" name="Materias2">
-    <option value="<% null %>">Seleccionar</option>
-    <% materias.forEach(function(materia) { %>
-      <option value="<%= materia %>"><%= materia %></option>
-    <% }) %>
-  </select>
-    </div>
+  <!-- Campo para editar el Correo -->
+  <div class="mb-3">
+    <label for="Correo" class="form-label">Correo</label>
+    <input type="email" class="form-control" name="Correo" value="<%= estudiante.correo %>" required>
+  </div>
 
-    <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar cambios</button>
-    <a href="/" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left-circle"></i> Volver</a>
-  </form>
+  <!-- Selector para Materia 1 -->
+  <div class="mb-3">
+    <label for="Materias1" class="form-label">Materia 1</label>
+    <select class="form-select mb-4 border-4" name="Materias1" required>
+      <!-- Opción por defecto para selección -->
+      <option value="<% null %>">Seleccionar</option>
+      <!-- Itera sobre el array materias para generar opciones -->
+      <% materias.forEach(function(materia) { %>
+        <option value="<%= materia %>"><%= materia %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <!-- Selector para Materia 2 -->
+  <div class="mb-3">
+    <label for="Materias2" class="form-label">Materia 2</label>
+    <select class="form-select mb-4 border-4" name="Materias2">
+      <option value="<% null %>">Seleccionar</option>
+      <% materias.forEach(function(materia) { %>
+        <option value="<%= materia %>"><%= materia %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <!-- Botón para enviar el formulario y guardar cambios -->
+  <button type="submit" class="btn btn-primary">
+    <i class="bi bi-save"></i> Guardar cambios
+  </button>
+
+  <!-- Botón para regresar a la página principal -->
+  <a href="/" class="btn btn-secondary ms-2">
+    <i class="bi bi-arrow-left-circle"></i> Volver
+  </a>
+
+</form>

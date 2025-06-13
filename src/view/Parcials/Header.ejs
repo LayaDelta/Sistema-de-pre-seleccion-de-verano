@@ -1,16 +1,32 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Inicio</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
+<!-- Barra de navegación principal -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid"><!-- Contenedor fluido para que ocupe todo el ancho -->
+    
+    <!-- navegacion a inicio -->
+    <a class="navbar-brand fw-bold" href="/">Inicio</a>
+    
+    <!-- Botón que aparece en dispositivos pequeños para mostrar/ocultar menú -->
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav" 
+      aria-controls="navbarNav" 
+      aria-expanded="false" 
+      aria-label="Alternar navegación"
+    >
+      <!-- Icono compacto del botón toggler -->
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Contenedor del menú que se colapsa en pantallas pequeñas -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <a class="navbar-brand" href="/Administrador">Administrador</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
-      <span class="navbar-toggler-icon"></span>
-      </button>
-      </div>
+      <ul class="navbar-nav ms-auto"><!-- Lista de elementos del menú, alineada a la derecha -->
+        <li class="nav-item"><!-- Ítem del menú -->
+          <a class="nav-link fs-5" href="/Administrador">Administrador</a><!-- Enlace a la sección administrador con tamaño de fuente mediano -->
+        </li>
+      </ul>
+    </div>
+
   </div>
 </nav>

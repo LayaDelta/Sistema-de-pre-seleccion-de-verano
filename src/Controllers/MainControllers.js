@@ -1,5 +1,6 @@
 const pool = require("../../Config/Conexion").promise();
 
+// Cuenta cuántos estudiantes están inscritos en cada materia
 const contarMaterias = async (materias) => {
   const [result] = await pool.query(`SELECT materia, materia2 FROM estudiantes`);
   const conteo = {};
@@ -13,6 +14,7 @@ const contarMaterias = async (materias) => {
   return conteo;
 };
 
+// Renderiza la vista principal con el conteo actualizado
 const index = async (req, res) => {
   const materias = req.app.locals.materias;
   const conteoMaterias = await contarMaterias(materias);
@@ -23,6 +25,7 @@ const index = async (req, res) => {
   });
 };
 
+// Procesa el formulario de registro de estudiante
 const submit = async (req, res) => {
   const materias = req.app.locals.materias;
 
@@ -81,6 +84,7 @@ const submit = async (req, res) => {
   }
 };
 
+// Valida los datos del formulario antes de insertar en la BD
 const validarFormulario = (form, materias) => {
   const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
   const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -95,6 +99,7 @@ const validarFormulario = (form, materias) => {
 
   return null;
 };
+
 module.exports = {
   index,
   submit,

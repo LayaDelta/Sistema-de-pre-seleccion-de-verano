@@ -1,54 +1,72 @@
- 
+<!-- Contenedor principal con margen superior -->
 <div class="container mt-5">
+
   <div class="row">
-    <!-- Formulario -->
+
+    <!-- FORMULARIO DE REGISTRO -->
     <div class="col-md-6">
       <div class="card shadow-lg">
         <div class="card-body">
+
+          <!-- Título del formulario -->
           <h3 class="card-title mb-4 text-center">Registro de Estudiante</h3>
 
+          <!-- Validación: muestra mensaje de error si existe la variable Validacion -->
           <% if (typeof Validacion !== "undefined") { %>
             <div class="alert alert-danger"><%= Mensaje %></div>
           <% } %>
 
-          <% if (typeof ErrDup!== "undefined") { %>
+          <!-- Validación: muestra mensaje de error si existe la variable ErrDup -->
+          <% if (typeof ErrDup !== "undefined") { %>
             <div class="alert alert-danger"><%= Mensaje %></div>
           <% } %>
+
+          <!-- Confirmación: muestra mensaje si existe la variable Confirmacion -->
           <% if (typeof Confirmacion !== "undefined") { %>
             <div class="alert alert-success">Registro exitoso.</div>
           <% } %>
 
+          <!-- Formulario que envía datos por POST a la raíz -->
           <form action="/" method="post">
+
+            <!-- Campo de Nombre -->
             <div class="mb-3">
               <label class="form-label">Nombre:</label>
+              <!-- Valor por defecto: si existe en formData lo coloca, si no, queda vacío -->
               <input type="text" class="form-control" name="Nombre" value="<%= formData.Nombre || '' %>" required>
             </div>
 
+            <!-- Campo de Apellido -->
             <div class="mb-3">
               <label class="form-label">Apellido:</label>
               <input type="text" class="form-control" name="Apellido" value="<%= formData.Apellido || '' %>" required>
             </div>
 
+            <!-- Campo de Cédula -->
             <div class="mb-3">
               <label class="form-label">Cédula:</label>
               <input type="number" class="form-control" name="Cedula" value="<%= formData.Cedula || '' %>" required>
             </div>
 
+            <!-- Campo de Correo -->
             <div class="mb-3">
               <label class="form-label">Correo:</label>
               <input type="email" class="form-control" name="Correo" value="<%= formData.Correo || '' %>" required>
             </div>
 
+            <!-- Selector de Materia 1 -->
             <div class="mb-3">
               <label class="form-label">Materia 1:</label>
               <select class="form-select" name="Materias1" required>
                 <option>Seleccionar</option>
+                <!-- Recorre el array materias y crea una opción por cada una -->
                 <% materias.forEach(m => { %>
                   <option value="<%= m %>"><%= m %></option>
                 <% }) %>
               </select>
             </div>
 
+            <!-- Selector de Materia 2 -->
             <div class="mb-3">
               <label class="form-label">Materia 2:</label>
               <select class="form-select" name="Materias2">
@@ -59,34 +77,50 @@
               </select>
             </div>
 
+            <!-- Botón para enviar el formulario -->
             <button type="submit" class="btn btn-primary w-100">Registrar</button>
+
           </form>
 
         </div>
       </div>
     </div>
 
-    <!-- Tabla conteo -->
-    <div class="col-md-6"> 
-  <h4 class="mb-3">Cantidad de Inscritos por Materia</h4>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Materia</th>
-        <th>Inscritos</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% 
-        Object.entries(conteoMaterias)
-          .sort((a, b) => b[1] - a[1]) // ordenar descendente por cantidad
-          .forEach(([materia, cantidad]) => { 
-      %>
-        <tr>
-          <td><%= materia %></td>
-          <td><%= cantidad %></td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+    <!-- TABLA DE CONTEO DE INSCRITOS POR MATERIA -->
+    <div class="col-md-6">
+
+      <!-- Título de la tabla -->
+      <h4 class="mb-3">Cantidad de Inscritos por Materia</h4>
+
+      <!-- Tabla de pre-visualizacion de materias -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Inscritos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% 
+            // Convierte el objeto conteoMaterias en un array de pares [materia, cantidad]
+            // Ordena los pares en orden descendente por cantidad de inscritos
+            // Recorre el array ordenado y crea una fila por cada materia
+            Object.entries(conteoMaterias)
+              .sort((a, b) => b[1] - a[1])
+              .forEach(([materia, cantidad]) => { 
+          %>
+            <tr>
+              <!-- Columna con el nombre de la materia -->
+              <td><%= materia %></td>
+              <!-- Columna con la cantidad de inscritos -->
+              <td><%= cantidad %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
 </div>

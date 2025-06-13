@@ -1,6 +1,14 @@
 <% if (typeof Validacion !== "undefined" && Validacion) { %>
-<div class="alert alert-danger alert-dismissible fade show" role="alert"> 
-  <p><%= Mensaje %></p>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-</div>
+  <!-- Verifica si la variable Validacion está definida y es verdadera -->
+
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <!-- Muestra una alerta de error que se puede cerrar -->
+
+    <p><%= Mensaje %></p>
+    <!-- Muestra el mensaje de validación dinámico -->
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    <!-- Botón para cerrar la alerta usando Bootstrap -->
+  </div>
+
 <% } %>
