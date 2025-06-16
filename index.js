@@ -14,6 +14,9 @@ const path = require("path");
 // Importa el middleware de layouts para EJS
 const layouts = require("express-ejs-layouts");
 
+//configuracion de la carpeta puvlic
+app.use(express.static(path.join(__dirname, 'public')));
+
 // IMPORTACIÓN DE RUTAS
 
 // Importa las rutas principales desde mainRouter
@@ -54,6 +57,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Usa el middleware de layouts en la aplicación
 app.use(layouts);
+
+
 
 // CONFIGURACIÓN DE LA APLICACIÓN
 
